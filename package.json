@@ -1,0 +1,23 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "Program that allows user to view and manage employees, roles and departments",
+  "main": "index.js",
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MCM1015/employee_tracker.git"
+  },
+  "author": "Mary McClernan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MCM1015/employee_tracker/issues"
+  },
+  "homepage": "https://github.com/MCM1015/employee_tracker#readme",
+  "dependencies": {
+    "inquirer": "^8.0.0",
+    "mysql": "^2.18.1"
+  }
+}
