@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/MCM1015/employee_tracker#readme",
   "dependencies": {
+    "constants": "0.0.2",
     "inquirer": "^8.0.0",
     "mysql": "^2.18.1"
   }

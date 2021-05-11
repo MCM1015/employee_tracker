@@ -1,4 +1,3 @@
-const { DH_UNABLE_TO_CHECK_GENERATOR } = require('node:constants');
 const connection = require('./connection');
 
 class DB {
@@ -7,7 +6,13 @@ class DB {
     }
     findAllEmployees() {
         return this.connection.query(
-            "SELECT employee.id, employee.first_name, employee.lasname, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;"
+            "SELECT employee.id, employee.first_name, employee.last_name, roles.title, department.name AS department, roles.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN roles on employee.roles_id = roles.id LEFT JOIN department on roles.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;"
+        );
+    }
+
+    findDept() {
+        return this.connection.query(
+        'SELECT name FROM employees.department'
         );
     }
 }
