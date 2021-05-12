@@ -72,7 +72,8 @@ async function addEmployee() {
     let employee = values1.map(empID => {
         return empID.id
     });
-    
+    let array = employee
+    array.push('No Manager');
     console.table(role);
     console.table(employees);
     inquirer.prompt([
@@ -96,15 +97,12 @@ async function addEmployee() {
             type: 'list',
             name: 'manager_id',
             message: 'What is the employees Manager_id?(see employee table for reference)?',
-            choices: employee,
+            choices: array,
         }
     ]).then(async function (resp) {
-        let add = db.addAnEmployee(resp);
-        add;
+        let add = db.addAnEmployee(resp.first_name, resp.last_name,resp.roles_id,resp.manager_id)
         mainPrompt();
-        console.log(resp);
     });
-
 }
 
 // View all employees based on Department selected - Done
@@ -188,10 +186,39 @@ async function addRole() {
         });
 }
 
-// Update Employee Role - In Progress
+// Update Employee Role - Done -- convert id to first and last name and back to id instead of printing table
 async function updateEmpRole() {
+    let role = await db.viewRoles();
+    const values = Object.values(role);
+    let roles = values.map(roleID => {
+        return roleID.id
+    });
+    let employees = await db.findAllEmployees();
+    const values1 = Object.values(employees);
+    let employee = values1.map(empID => {
+        return empID.id
+    });
+    console.table(employees);
+    console.table(role);
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'last_name',
+            message: 'What is the employees id (see table for reference)?',
+            choices: employee
+        },
+        {
+            type: 'list',
+            name: 'roles_id',
+            message: 'What is the employees new role id (see roles table for reference)?',
+            choices: roles,
+        },
+        
+    ]).then(async function (resp) {
+        let add = db.updateRole(resp.last_name,resp.roles_id)
+        mainPrompt();
+    });
 
-    mainPrompt();
 }
 
 mainPrompt();
