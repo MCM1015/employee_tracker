@@ -101,7 +101,7 @@ async function addEmployee() {
         }
     ]).then(async function (resp) {
         let add = db.addAnEmployee(resp.first_name, resp.last_name,resp.roles_id,resp.manager_id)
-        mainPrompt();
+        viewEmployees();
     });
 }
 
@@ -112,7 +112,6 @@ async function viewAllByDept() {
     let departID = values.map(deptName => {
         return deptName.name
     });
-    console.log(departID);
     inquirer.prompt({
         type: 'list',
         name: 'depts',
@@ -135,8 +134,7 @@ async function addDept() {
             message: 'What is the department name?'
         }).then(async function (resp) {
             let add = db.addADepartment(resp);
-            add;
-            mainPrompt();
+            viewallDepts();
         });
 }
 
@@ -181,8 +179,7 @@ async function addRole() {
         }
     ]).then(async function (resp) {
             let add = db.addARole(resp);
-            add;
-            mainPrompt();
+            viewallRoles();
         });
 }
 
@@ -216,7 +213,7 @@ async function updateEmpRole() {
         
     ]).then(async function (resp) {
         let add = db.updateRole(resp.last_name,resp.roles_id)
-        mainPrompt();
+        viewEmployees();
     });
 
 }
