@@ -11,7 +11,7 @@ const mainPrompt = () => {
             type: 'list',
             name: 'init',
             message: 'What would you like to do?',
-            choices: ['View all employees', 'Add Employee', 'View All Employees by Department', 'Add Department', 'View All Roles', 'Add Role', 'Update Employee Role', 'Quit'],
+            choices: ['View all employees', 'Add Employee', 'View All Employees by Department', 'Add Department', 'View All Roles', 'View All Departments', 'Add Role', 'Update Employee Role', 'Quit'],
         }).then((resp) => {
             switch (resp.init) {
                 case 'View all employees':
@@ -33,6 +33,10 @@ const mainPrompt = () => {
                 case 'View All Roles':
                     viewallRoles();
                     break;
+                
+                case 'View All Departments':
+                    viewallDepts();
+                    break;
 
                 case 'Add Role':
                     addRole();
@@ -43,6 +47,7 @@ const mainPrompt = () => {
                     break;
 
                 case 'Quit':
+                    process.exit();
                     break;
             }
         });
@@ -55,14 +60,21 @@ async function viewEmployees() {
     mainPrompt();
 }
 
-// Add an employee - In Progress ?
+// Add an employee - Done -- HELP -- convert id to name and back to id instead of printing table
 async function addEmployee() {
-    let dept = await db.findDept();
-    const values = Object.values(dept);
-    let department = values.map(deptName => {
-        return deptName.name
+    let role = await db.viewRoles();
+    const values = Object.values(role);
+    let roles = values.map(roleID => {
+        return roleID.id
     });
-    console.log(dept);
+    let employees = await db.findAllEmployees();
+    const values1 = Object.values(employees);
+    let employee = values1.map(empID => {
+        return empID.id
+    });
+    
+    console.table(role);
+    console.table(employees);
     inquirer.prompt([
         {
             type: 'input',
@@ -76,21 +88,19 @@ async function addEmployee() {
         },
         {
             type: 'list',
-            name: 'roles_name',
-            message: 'What is the employees role?',
-            choices: department,
+            name: 'roles_id',
+            message: 'What is the employees role id (see roles table for reference)?',
+            choices: roles,
         },
         {
             type: 'list',
-            name: 'manager_name',
-            message: 'Who is the employees Manager?',
-            choices: ['HELP'],
+            name: 'manager_id',
+            message: 'What is the employees Manager_id?(see employee table for reference)?',
+            choices: employee,
         }
-    ]).then((resp) => {
-        //reverse engineer roles_id and manager_id
-        // if resp= this then resp.roles_id = that 
-        //addAnEmployee
-        // add employee to database
+    ]).then(async function (resp) {
+        let add = db.addAnEmployee(resp);
+        add;
         mainPrompt();
         console.log(resp);
     });
@@ -118,14 +128,18 @@ async function viewAllByDept() {
     });
 }
 
-// Add a department - In Progress ?
+// Add a department - Done
 async function addDept() {
-    let dept = await db.findDept();
-    const values = Object.values(dept);
-    let department = values.map(deptName => {
-        return deptName.name
-    });
-    console.log(department);
+    inquirer.prompt(
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is the department name?'
+        }).then(async function (resp) {
+            let add = db.addADepartment(resp);
+            add;
+            mainPrompt();
+        });
 }
 
 // View all Roles - Done
@@ -135,10 +149,43 @@ async function viewallRoles() {
     mainPrompt();
 }
 
-// Add a Role - In Progress
-async function addRole() {
-
+// View all Department - Done
+async function viewallDepts() {
+    let department = await db.findDept();
+    console.table(department);
     mainPrompt();
+}
+
+// Add a Role - Done -- convert id to name and back to id instead of printing table
+async function addRole() {
+    let dept = await db.findDept();
+    const values = Object.values(dept);
+    let departID = values.map(deptName => {
+        return deptName.id
+    });
+    console.table(dept);
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'What is the role title?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the salary for this role?'
+        },
+        {
+            type: 'list',
+            name: 'department_id',
+            message: 'What is the department ID number (see table for list of departments and associated IDs)',
+            choices: departID
+        }
+    ]).then(async function (resp) {
+            let add = db.addARole(resp);
+            add;
+            mainPrompt();
+        });
 }
 
 // Update Employee Role - In Progress
@@ -147,5 +194,4 @@ async function updateEmpRole() {
     mainPrompt();
 }
 
-viewEmployees();
-//mainPrompt();
+mainPrompt();

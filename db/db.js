@@ -31,18 +31,43 @@ class DB {
         'SELECT * FROM employees.roles'
         );
     }
-
-
+    
     // Add an employee - In Progress
     addAnEmployee(resp) {
         return this.connection.query(
             'INSERT INTO employee SET ?',
             resp,
+            console.log('employee added'),
         (err, res) => {
                 if (err) throw err;
-                console.log('employee added')
         });
     }
+
+//Add a role - Not Started
+addARole(resp) {
+    return this.connection.query(
+        'INSERT INTO roles SET ?',
+            resp,
+            console.log('role added'),
+        (err, res) => {
+                if (err) throw err;
+        });
 }
+
+//Add a department - Done
+addADepartment(resp) {
+    return this.connection.query(
+        'INSERT INTO department SET ?',
+            resp,
+            console.log('department added'),
+        (err, res) => {
+                if (err) throw err;
+        });
+}
+
+//Update employee role - Not Started
+
+}
+
 
 module.exports = new DB(connection);
