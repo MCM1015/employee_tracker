@@ -28,7 +28,10 @@
 
   Program Preview: 
 
-  (//INSERT GIF/VIDEO HERE//)
+  ![GIF](./images/employee_tracker.gif)
+  
+  [Full Video Link](https://drive.google.com/file/d/1mhB27vaDaxpZQI7qGUhJmjvhquTnKM7B/view)
+
   
   ## License 
   This project is licensed under the [MIT](https://opensource.org/licenses/MIT) license.
